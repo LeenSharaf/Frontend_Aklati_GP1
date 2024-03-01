@@ -1,21 +1,21 @@
 //import 'dart:io';
 import 'dart:convert';
+import 'dart:developer';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:provider/provider.dart';
+import 'package:roaa/providers/AppProvider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-import 'package:test_homee/Shop/shop.dart';
-import 'package:test_homee/main_home.dart';
 import 'package:http/http.dart' as http;
 
+import '../../constran.dart';
 
 import '../Pages/fav.dart';
+import '../main_home.dart';
 import 'Signup.dart';
 import 'package:flutter/material.dart';
 import 'config.dart';
 import 'square_tile.dart';
-import 'package:test_homee/constran.dart';
 
 class LoginScreen extends StatefulWidget {
 
@@ -88,48 +88,7 @@ TextEditingController mobileController = TextEditingController();
   void initSharedPref() async{
     prefs = await SharedPreferences.getInstance();
   }
-  void loginuser() async{
-    if(mobileController.text.isNotEmpty && passwordController.text.isNotEmpty){
-      var reqBody = jsonEncode({
-        "mobile": mobileController.text,
-        "password": passwordController.text
-      });
-      //print(login);
-      var response = await http.post(Uri.parse("http://10.0.2.2:3000/loginUser"),
-          headers: {"Content-Type":"application/json"},
-          body: reqBody
-      );
-      var jsonResponse = jsonDecode(response.body);
-    //jsonResponse['success']==true
-      if(jsonResponse['success']){
-         Fluttertoast.showToast(
-                                  msg: 'Log in Successful !',
-                                  toastLength: Toast.LENGTH_SHORT,
-                                  gravity: ToastGravity.BOTTOM,
-                                  backgroundColor: Colors.green,
-                                  textColor: Colors.white,
-                                  fontSize: 16.0);
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => Home(
-                                            
-                                          )));
-          // var myToken = jsonResponse['token'];
-          // prefs.setString('token', myToken);
-      }else{
-        //print('Something went wrong');
-        Fluttertoast.showToast(
-          msg: " invaled username or password !",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.red,
-          textColor: Colors.white,
-          fontSize: 12.0);
-      }
-    }
-  }
+  
 
 
 
@@ -148,239 +107,237 @@ TextEditingController mobileController = TextEditingController();
   }
 
   initWidget() {
-    return Scaffold(
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Container(
+    return Consumer<AppProvider>(
+      builder: (context,provider,c) {
+        return Scaffold(
+          body: SingleChildScrollView(
+            child: Column(
+              children: [
+                Container(
               height: 300,
             
               decoration: BoxDecoration(
                 image: DecorationImage(
                  fit:BoxFit.fill ,
-                 image: AssetImage("lib/images/foood.jpg")
+                 image: AssetImage("lib/images/back1.png")
                  ),
                 borderRadius: BorderRadius.only(bottomLeft: Radius.circular(90)),
-                 color: kPrimaryColor,
-                    gradient: LinearGradient(colors: [kPrimaryColor,kPrimaryColor],
-                      begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                ),
-              ),
-              
-            ),
-
-            Container(
-              alignment: Alignment.center,
-              margin: EdgeInsets.only(left: 20, right: 20, top: 50),
-              padding: EdgeInsets.only(left: 20, right: 20),
-              height: 54,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(50),
-                color: Colors.grey[200],
+                 color: Colors.white,
+                //     gradient: LinearGradient(colors: [kPrimaryColor,kPrimaryColor],
+                //       begin: Alignment.topCenter,
+                //   end: Alignment.bottomCenter,
+                // ),
                 boxShadow: [
                   BoxShadow(
                       offset: Offset(0, 10),
                       blurRadius: 50,
-                      color: Color(0xffEEEEEE)
+                      color: Color.fromARGB(255, 207, 161, 161)
                   ),
                 ],
               ),
-              child: TextField(
-              controller: mobileController,
 
-              cursorColor: kPrimaryColor,
-                decoration: InputDecoration(
-                  icon: Icon(
-                    Icons.email,
-                color: kPrimaryColor,
-                  ),
-                  hintText: "Enter Email",
-                  enabledBorder: InputBorder.none,
-                  focusedBorder: InputBorder.none,
-                ),
-              ),
-            ),
-
-            Container(
-              alignment: Alignment.center,
-              margin: EdgeInsets.only(left: 20, right: 20, top: 20),
-              padding: EdgeInsets.only(left: 20, right: 20),
-              height: 54,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(50),
-                color: Color(0xffEEEEEE),
-                boxShadow: [
-                  BoxShadow(
-                      offset: Offset(0, 20),
-                      blurRadius: 100,
-                      color: Color(0xffEEEEEE)
-                  ),
-                ],
-              ),
-              child: TextField(
-   
-                 obscureText: _showPassword,
-                controller: passwordController,
-              cursorColor: kPrimaryColor,
-                decoration: InputDecoration(
-                  focusColor: kPrimaryColor,
-                  icon: Icon(
-                    Icons.vpn_key,
-                    color: kPrimaryColor,
-                  ),
-                  hintText: "Enter Password",
-                  enabledBorder: InputBorder.none,
-                  focusedBorder: InputBorder.none,
-
-
-                   suffixIcon: GestureDetector(
-                                      onTap: _togglePasswordVisibility,
-                                      child: _showPassword
-                                          ? Icon(Icons.visibility,
-                                              color:kPrimaryColor)
-                                          : Icon(Icons.visibility_off,
-                                              color: kPrimaryColor),
-                                    ),
-                ),
-              ),
-             
-            ),
-            Container(
-              margin: EdgeInsets.symmetric(horizontal: 30, vertical: 20),
-              alignment: Alignment.centerRight,
-              child: GestureDetector(
-                onTap: () {
-                                     
-                                                   },
-                child: Text("Forget Password?",
-                style: TextStyle(
-                                          color: Colors.black,
-                                          
-                                          fontSize: 15,
-                                          ),),
-              ),
-            ),
-
-            GestureDetector(
-               onTap: (){
-                loginuser();
-                    },
-             
-                // Write Click Listener Code Here.
               
-              child: Container(
-                alignment: Alignment.center,
-                margin: EdgeInsets.only(left: 20, right: 20, top: 20),
-                padding: EdgeInsets.only(left: 20, right: 20),
-                height: 54,
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(colors: [kPrimaryColor, kPrimaryColor],
-                      begin: Alignment.centerLeft,
-                      end: Alignment.centerRight
-                  ),
-                  borderRadius: BorderRadius.circular(50),
-                  
-                  color: Colors.grey[200],
-                  boxShadow: [
-                    BoxShadow(
-                        offset: Offset(0, 10),
-                        blurRadius: 50,
-                        color: Color(0xffEEEEEE)
-                    ),
-                  ],
-                ),
-                child: Text(
-                  "LOGIN",
-                  style: TextStyle(
-                      color: Colors.white
-                  ),
-                ),
-              ),
             ),
 
-              const SizedBox(height: 20),
+                Container(
+                  alignment: Alignment.center,
+                  margin: EdgeInsets.only(left: 20, right: 20, top: 50),
+                  padding: EdgeInsets.only(left: 20, right: 20),
+                  height: 54,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(50),
+                    color: Colors.grey[200],
+                    boxShadow: [
+                      BoxShadow(
+                          offset: Offset(0, 10),
+                          blurRadius: 50,
+                          color: Color(0xffEEEEEE)
+                      ),
+                    ],
+                  ),
+                  child: TextField(
+                  controller: provider.mobileController,
 
-               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Divider(
-                        thickness: 0.5,
-                        color: Colors.grey[400],
+                  cursorColor: kPrimaryColor,
+                    decoration: InputDecoration(
+                      icon: Icon(
+                        Icons.phone,
+                    color: kPrimaryColor,
                       ),
+                      hintText: "Enter your phone",
+                      enabledBorder: InputBorder.none,
+                      focusedBorder: InputBorder.none,
                     ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                      child: Text(
-                        'Or continue with',
-                        style: TextStyle(color: Colors.grey[700]),
-                      ),
-                    ),
-                    Expanded(
-                      child: Divider(
-                        thickness: 0.5,
-                        color: Colors.grey[400],
-                      ),
-                    ),
-                  ],
+                  ),
                 ),
-              ),
 
-              const SizedBox(height: 10),
+                Container(
+                  alignment: Alignment.center,
+                  margin: EdgeInsets.only(left: 20, right: 20, top: 20),
+                  padding: EdgeInsets.only(left: 20, right: 20),
+                  height: 54,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(50),
+                    color: Color(0xffEEEEEE),
+                    boxShadow: [
+                      BoxShadow(
+                          offset: Offset(0, 20),
+                          blurRadius: 100,
+                          color: Color(0xffEEEEEE)
+                      ),
+                    ],
+                  ),
+                  child: TextField(
+   
+                     obscureText: _showPassword,
+                    controller: provider.passwordController,
+                  cursorColor: kPrimaryColor,
+                    decoration: InputDecoration(
+                      focusColor: kPrimaryColor,
+                      icon: Icon(
+                        Icons.vpn_key,
+                        color: kPrimaryColor,
+                      ),
+                      hintText: "Enter Password",
+                      enabledBorder: InputBorder.none,
+                      focusedBorder: InputBorder.none,
 
-              // google + apple sign in buttons
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
-                  // google button
-                  SquareTile(imagePath: 'lib/images/facebook.jpg'),
 
-                  SizedBox(width: 25),
+                       suffixIcon: GestureDetector(
+                                          onTap: _togglePasswordVisibility,
+                                          child: _showPassword
+                                              ? Icon(Icons.visibility,
+                                                  color:kPrimaryColor)
+                                              : Icon(Icons.visibility_off,
+                                                  color: kPrimaryColor),
+                                        ),
+                    ),
+                  ),
+                 
+                ),
+                Container(
+                  margin: EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+                  alignment: Alignment.centerRight,
+                  child: GestureDetector(
+                    onTap: () {
+                                         
+                                                       },
+                    child: Text("Forget Password?",
+                    style: TextStyle(
+                                              color: Colors.black,
+                                              
+                                              fontSize: 15,
+                                              ),),
+                  ),
+                ),
 
-                  // apple button
-                  SquareTile(imagePath: 'lib/images/google.jpg')
-                ],
-              ),
+                GestureDetector(
+                   onTap: ()async{
+                    final re=await provider.loginuser();
+                    log(re);
+                    if(re=='success'){
 
-
-
-
-
-
-
-
-
-            Container(
-              margin: EdgeInsets.only(top: 10),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text("Don't Have Any Account?  "),
-                  GestureDetector(
+                      Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context){return Home();}));
+                    }
+                        },
+                 
+                    // Write Click Listener Code Here.
+                  
+                  child: Container(
+                    alignment: Alignment.center,
+                    margin: EdgeInsets.only(left: 20, right: 20, top: 20),
+                    padding: EdgeInsets.only(left: 20, right: 20),
+                    height: 54,
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(colors: [kPrimaryColor, kPrimaryColor],
+                          begin: Alignment.centerLeft,
+                          end: Alignment.centerRight
+                      ),
+                      borderRadius: BorderRadius.circular(50),
+                      
+                      color: Colors.grey[200],
+                      boxShadow: [
+                        BoxShadow(
+                            offset: Offset(0, 10),
+                            blurRadius: 50,
+                            color: Color(0xffEEEEEE)
+                        ),
+                      ],
+                    ),
                     child: Text(
-                      "Register Now",
+                      "LOGIN",
                       style: TextStyle(
-                          color: kPrimaryColor
+                          color: Colors.white
                       ),
                     ),
-                    onTap: () {
-                      // Write Tap Code Here.
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => SignUpScreen(),
-                        )
-                      );
-                    },
-                  )
-                ],
-              ),
+                  ),
+                ),
+
+                  const SizedBox(height: 20),
+
+                   Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Divider(
+                            thickness: 0.5,
+                            color: Colors.grey[400],
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                          child: Text(
+                            'Or continue with',
+                            style: TextStyle(color: Colors.grey[700]),
+                          ),
+                        ),
+                        Expanded(
+                          child: Divider(
+                            thickness: 0.5,
+                            color: Colors.grey[400],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  const SizedBox(height: 10),
+
+                  // google + apple sign in buttons
+                 
+
+                Container(
+                  margin: EdgeInsets.only(top: 10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text("Don't Have Any Account?  "),
+                      GestureDetector(
+                        child: Text(
+                          "Register Now",
+                          style: TextStyle(
+                              color: kPrimaryColor
+                          ),
+                        ),
+                        onTap: () {
+                          // Write Tap Code Here.
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => SignUpScreen(),
+                            )
+                          );
+                        },
+                      )
+                    ],
+                  ),
+                )
+              ],
             )
-          ],
-        )
-      )
+          )
+        );
+      }
     );
   }
    void _togglePasswordVisibility() {
