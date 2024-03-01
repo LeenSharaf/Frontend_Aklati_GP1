@@ -2,8 +2,11 @@ import 'dart:async';
 
 
 import 'package:flutter/material.dart';
-import 'package:test_homee/start_page/helper.dart';
-import 'package:test_homee/start_page/introScreen.dart';
+
+
+import '../constran.dart';
+import '../uitls/helper.dart';
+import 'introScreen.dart';
 
 
 class SplashScreen extends StatefulWidget {
@@ -39,15 +42,16 @@ class _SplashScreenState extends State<SplashScreen> {
             Container(
               height: double.infinity,
               width: double.infinity,
-              child: Image.asset(
-               "lib/icons/splashIcon.png",
-                fit: BoxFit.fill,
-              ),
+              color: kPrimaryColor,
+              // child: Image.asset(
+              //  "lib/icons/splashIcon.png",
+              //   fit: BoxFit.fill,
+              // ),
             ),
             Align(
               alignment: Alignment.center,
               child: Image.asset(
-                "lib/icons/logohome.png", 
+                "lib/icons/aklati-03.png", 
               ),
             ),
           ],
