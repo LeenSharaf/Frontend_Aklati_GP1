@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:test_homee/main_home.dart';
-import 'package:test_homee/profile/body.dart';
+import '../main_home.dart';
+import '../profile/body.dart';
 
 import '../constran.dart';
 
