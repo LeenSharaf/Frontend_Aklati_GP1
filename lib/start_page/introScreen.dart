@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:test_homee/constran.dart';
-import 'package:test_homee/customer/LogIn.dart';
-import 'package:test_homee/customer/loginfor_smalluser.dart';
-import 'package:test_homee/start_page/helper.dart';
+import 'package:provider/provider.dart';
+import 'package:roaa/providers/AppProvider.dart';
+import '../constran.dart';
+import '../customer/LogIn.dart';
+import '../customer/loginfor_smalluser.dart';
+import '../start_page/helper.dart';
 
 
 class IntroScreen extends StatefulWidget {
@@ -24,9 +26,15 @@ class _IntroScreenState extends State<IntroScreen> {
     
     },
     {
-      "image": "lib/images/vector2.png",
+      "image": "lib/images/vector3.png",
       "title": "Order Now",
-      "desc": "You can order it and we can Deliver it to you"
+      "desc": "You can order any dishes from any pages "
+    },
+    {
+      "image": "lib/images/cash.jpg",
+      "title": "",
+      "desc":
+          "Payment is cash upon receipt"
     },
     /*{
       "image": "lib/images/vector3.png",
@@ -89,14 +97,14 @@ class _IntroScreenState extends State<IntroScreen> {
                       backgroundColor:
                           count == 1 ? Color.fromARGB(255, 204, 24, 24) : Color(0xFFB6B7B7),
                     ),
-                    // SizedBox(
-                    //   width: 5,
-                    // ),
-                    // CircleAvatar(
-                    //   radius: 5,
-                    //   backgroundColor:
-                    //       count == 2 ? Color.fromARGB(255, 204, 24, 24) : Color(0xFFB6B7B7),
-                    // )
+                    SizedBox(
+                      width: 5,
+                    ),
+                    CircleAvatar(
+                      radius: 5,
+                      backgroundColor:
+                          count == 2 ? Color.fromARGB(255, 204, 24, 24) : Color(0xFFB6B7B7),
+                    )
                   ],
                 ),
                 Spacer(),
@@ -118,12 +126,15 @@ class _IntroScreenState extends State<IntroScreen> {
                   width: double.infinity,
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-            backgroundColor: Color.fromARGB(255, 204, 24, 24),
+                    shape: StadiumBorder(),
+
+            backgroundColor: kPrimaryColor,
            
 ),
 
          
                       onPressed: () {
+                        Provider.of<AppProvider>(context,listen: false).role='admin';
                         Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -131,7 +142,7 @@ class _IntroScreenState extends State<IntroScreen> {
                         )
                       );
                       },
-                      child: Text("LogIn As Admin")),
+                      child: Text("Page Owner")),
                 ),
                 Spacer(),
                 SizedBox(
@@ -139,12 +150,15 @@ class _IntroScreenState extends State<IntroScreen> {
                   width: double.infinity,
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-            backgroundColor: Color.fromARGB(255, 204, 24, 24),
+                    shape: StadiumBorder(),
+
+            backgroundColor: kPrimaryColor,
            
 ),
 
          
                       onPressed: () {
+                        Provider.of<AppProvider>(context,listen: false).role='admin';
                         Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -152,7 +166,7 @@ class _IntroScreenState extends State<IntroScreen> {
                         )
                       );
                       },
-                      child: Text("LogIn As user")),
+                      child: Text("shopper")),
                 ),
                                 Spacer(),
 
