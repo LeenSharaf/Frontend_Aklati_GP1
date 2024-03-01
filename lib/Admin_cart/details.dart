@@ -2,10 +2,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import '../constran.dart';
+import '../models/order.dart';
 import 'cart_detailes.dart';
 
  
 class Details extends StatelessWidget {
+  final Order order;
+
+  const Details({super.key, required this.order});
   @override
   Widget build(BuildContext context) {
     return Scaffold(             
@@ -27,7 +31,7 @@ class Details extends StatelessWidget {
        )
        ),
        child: Column(children: [
-        cartcus(),
+        cartcus(order: order,),
        Container(//decoration: BoxDecoration
       // (borderRadius: BorderRadius.circular(10))
        margin: EdgeInsets.symmetric(vertical: 20,horizontal: 15),
