@@ -1,13 +1,13 @@
 import 'dart:convert';
 
-import 'package:easy_localization/easy_localization.dart';
+
 import 'package:flutter/material.dart';
 
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 import 'package:lottie/lottie.dart';
-import 'package:test_homee/constran.dart';
+import '../../constran.dart';
 
 class MyReal extends StatefulWidget {
  // final List firstlist;
@@ -132,7 +132,7 @@ class _MyRealState extends State<MyReal> {
             appBar: AppBar(
               backgroundColor: kPrimaryColor,
               title: Text(
-                'My Real Estates'.tr(),
+                'My Real Estates',
                 textAlign: TextAlign.center,
                 //style: textColor7,
               ),
@@ -403,7 +403,7 @@ class _MyRealState extends State<MyReal> {
                                                         BorderRadius.circular(
                                                             20)),
                                               ),
-                                              child: Text("Confirm".tr(),
+                                              child: Text("Confirm",
                                                  // style: textColor4
                                                   ),
                                             ),
@@ -422,7 +422,7 @@ class _MyRealState extends State<MyReal> {
                                                         BorderRadius.circular(
                                                             20)),
                                               ),
-                                              child: Text("Cancel".tr(),
+                                              child: Text("Cancel",
                                                  // style: textColor4
                                                   ),
                                             ),
