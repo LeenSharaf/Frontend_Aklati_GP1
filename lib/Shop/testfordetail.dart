@@ -634,13 +634,19 @@ import 'package:fluttertoast/fluttertoast.dart';
 //import 'package:test_homee/constran.dart';
 //import 'package:test_homee/profile/profile_screen.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
+import 'package:roaa/Pages/mainDishes.dart';
+import 'package:roaa/User_cart/Myorder.dart';
+import 'package:roaa/constran.dart';
+import 'package:roaa/models/item.dart';
+import 'package:roaa/providers/AppProvider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'shopData.dart';
 
 
 
 class Itm extends StatefulWidget {
-  final data shopdata;
+  final Item shopdata;
   //final int id;
   const Itm({Key? key, required this.shopdata}) : super(key: key);
   //const List<String> list = <String>['One', 'Two', 'Three', 'Four'];
@@ -686,14 +692,14 @@ class _ItemdetailState extends State<Itm> {
               child: const Text(
                 'Yes',
                 style: TextStyle(
-                    color: Color.fromARGB(255, 146, 14, 14),
+                    color: kPrimaryColor,
                     fontWeight: FontWeight.bold,
                     fontSize: 18),
               ),
               onPressed: () {
-                String c = count.toString();
-                addToCart(widget.shopdata.name, widget.shopdata.Image, size, c,
-                    widget.shopdata.price);
+                // String c = count.toString();
+                // addToCart(widget.shopdata.name, widget.shopdata.Image, size, c,
+                //     widget.shopdata.price);
               },
             ),
           ],
@@ -736,7 +742,6 @@ class _ItemdetailState extends State<Itm> {
       "item_name": item_name,
       "item_price": item_price,
       "item_desc": item_desc,
-
       // "item_img": widget.item_img,
       // "item_name": widget.item_name,
       // "item_price": widget.item_price,
@@ -758,22 +763,6 @@ class _ItemdetailState extends State<Itm> {
     print(data);
   }
 
-  Future addToCart(
-      String item_name, item_img, size, String count, String item_price) async {
-    var url = 'http://192.168.1.109/connect/shopping_cart/addto_cart.php';
-
-    var response = await http.post(Uri.parse(url), body: {
-      //"id" : id.toString(),
-      "item_name": item_name,
-      "item_img": item_img,
-      "size": size,
-      "count": count,
-      "item_price": item_price,
-    });
-
-    var data = json.decode(response.body);
-    print(data);
-  }
 
   var size = 'Single meal';
   int count = 0;
@@ -799,12 +788,12 @@ class _ItemdetailState extends State<Itm> {
         children: [
           SizedBox(
             width: double.infinity,
-            child: Image.asset(
-              widget.shopdata.Image,
+            child: Image.network(
+              widget.shopdata.img,
             ),
           ),
           buttonArrow(context),
-          scroll(),
+          scroll(widget.shopdata),
         ],
       ),
     ));
@@ -835,7 +824,7 @@ class _ItemdetailState extends State<Itm> {
               child: const Icon(
                 Icons.arrow_back_ios,
                 size: 20,
-                color: Color.fromARGB(255, 146, 14, 14),
+                color: kPrimaryColor,
               ),
             ),
           ),
@@ -844,7 +833,7 @@ class _ItemdetailState extends State<Itm> {
     );
   }
 
-  scroll() {
+  scroll(Item item) {
     return DraggableScrollableSheet(
         initialChildSize: 0.6,
         maxChildSize: 1.0,
@@ -880,7 +869,7 @@ class _ItemdetailState extends State<Itm> {
                   Row(
                     children: [
                       Text(
-                        widget.shopdata.name,style: TextStyle(
+                        widget.shopdata.name!,style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
                             color: Colors.black),
@@ -890,7 +879,7 @@ class _ItemdetailState extends State<Itm> {
                       //   Spacer(),
 
                       Text(
-                        widget.shopdata.price +" ILS",
+                        widget.shopdata.price!.toString() +" ILS",
                         style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
@@ -903,17 +892,21 @@ class _ItemdetailState extends State<Itm> {
                   ),
                   Row(children: [
                     RatingBar.builder(
-                      initialRating: 4,
+                      initialRating: item.rate.toDouble(),
                       minRating: 1,
                       direction: Axis.horizontal,
                       itemCount: 5,
                       itemSize: 18,
+                      tapOnlyMode: true,
+                      ignoreGestures: true,
                       itemPadding: EdgeInsets.symmetric(horizontal: 2),
                       itemBuilder: ((context, _) => Icon(
                             Icons.star_border,
-                            color: Color.fromARGB(255, 146, 14, 14),
+                            color: kPrimaryColor,
                           )),
-                      onRatingUpdate: (index) {},
+                      onRatingUpdate: (index) {
+                        index=item.rate.toDouble();
+                      },
                     ),
                     Padding(padding: EdgeInsets.symmetric(horizontal: 70)),
                     Container(
@@ -929,7 +922,7 @@ class _ItemdetailState extends State<Itm> {
                           icon: Icon(
                             Icons.message,
                             size: 20,
-                            color: Color.fromARGB(255, 146, 14, 14),
+                            color: kPrimaryColor,
                           ),
                         ),
                       ),
@@ -946,35 +939,18 @@ class _ItemdetailState extends State<Itm> {
                       ),
                       child: Center(
                         child: IconButton(
-                          icon: (isFavorite
+                          icon: (item.isLiked
                               ? Icon(Icons.favorite)
                               : Icon(Icons.favorite_border)),
-                          color: Color.fromARGB(255, 146, 14, 14),
+                          color: kPrimaryColor,
                           iconSize: 20,
-                          onPressed: () => {
-                            if (isFavorite)
-                              {
-                                // setState(() {
-                                //   isFavorite = false;
-                                // }),
-                                _persistedPrefrrence(),
-                                DeleteFromFavourite(widget.shopdata.Image)
-                              }
-                            else
-                              {
-                                // setState(() {
-                                //   isFavorite = true;
-                                // }),
-                                _persistedPrefrrence(),
-                                addToFavourite(
-                                  widget.shopdata.name,
-                                  widget.shopdata.Image,
-                                  widget.shopdata.price,
-                                  widget.shopdata.desc,
-                                  // widget.id,
-                                )
-                                // print(widget.id),
-                              }
+                          onPressed: () async{
+                            if(item.isLiked){
+                                      await Provider.of<AppProvider>(context,listen: false).disLikeItem(item.id!);
+                                    }
+                                    else{
+                                    await Provider.of<AppProvider>(context,listen: false).likeItem(item.id!);
+                                    }
                           },
                         ),
                       ),
@@ -984,19 +960,19 @@ class _ItemdetailState extends State<Itm> {
                     children: [
                       InkWell(
                         onTap: () {
-                          // Navigator.push(
-                          //     context,
-                          //     MaterialPageRoute(
-                          //       builder: (context) =>
-                          //       //  ProfileScreen  (),
-                          //     )
-                          //     );
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                popular(username: item.admin!.id!,page: item.admin!.pageName,),
+                              )
+                              );
                         },
-                        child: const CircleAvatar(
+                        child:  CircleAvatar(
                           backgroundColor: Colors.grey,
                           radius: 25,
                           // backgroundImage:image.asset( widget.shopdata.logo),
-                          backgroundImage: AssetImage("lib/images/3.png"),
+                          backgroundImage: NetworkImage(item.admin!=null?item.admin!.logo:''),
                         ),
                       ),
                       const SizedBox(
@@ -1006,7 +982,11 @@ class _ItemdetailState extends State<Itm> {
                         children: [
                           Text(
                             widget.shopdata
-                                .namepage,style: TextStyle(
+                                .admin!=null?
+                            widget.shopdata
+                                .admin!.pageName
+                                :''
+                                ,style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
                             color: Colors.black),
@@ -1033,13 +1013,13 @@ class _ItemdetailState extends State<Itm> {
                     padding: EdgeInsets.symmetric(vertical: 15),
                     child: Divider(
                       height: 4,
-                      color: Color.fromARGB(255, 146, 14, 14),
+                      color: kPrimaryColor,
                       thickness: 0.5,
                     ),
                   ),
                   Text("Description : " +
                     widget.shopdata
-                        .desc, style: TextStyle(
+                        .description!, style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
                             color: Colors.black),// style: Theme.of(context).textTheme.displayLarge,
@@ -1048,11 +1028,12 @@ class _ItemdetailState extends State<Itm> {
                   const SizedBox(
                     height: 40,
                   ),
-                  Text(
-                    "Ingredients : ",style: TextStyle(
+                  Text("Ingredients : " +
+                    widget.shopdata
+                        .ingredients!, style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
-                            color: Colors.black), // style: Theme.of(context).textTheme.displayLarge,
+                            color: Colors.black),// style: Theme.of(context).textTheme.displayLarge,
                   ),
 
                   const SizedBox(
@@ -1136,7 +1117,7 @@ class _ItemdetailState extends State<Itm> {
                                   size: 16,
                                 ),
                                 backgroundColor:
-                                    Color.fromARGB(255, 146, 14, 14),
+                                    kPrimaryColor,
                               ),
                               SizedBox(
                                 width: 6,
@@ -1159,7 +1140,7 @@ class _ItemdetailState extends State<Itm> {
                                         fontFamily: "Mulish-VariableFont",
                                         fontWeight: FontWeight.bold)),
                                 backgroundColor:
-                                    Color.fromARGB(255, 146, 14, 14),
+                                    kPrimaryColor,
                               ),
                             ],
                           ),
@@ -1175,10 +1156,15 @@ class _ItemdetailState extends State<Itm> {
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(18),
                             border: Border.all(
-                                color: Color.fromARGB(255, 146, 14, 14))),
-                        child: Icon(
-                          Icons.shopping_cart,
-                          color: Color.fromARGB(255, 146, 14, 14),
+                                color: kPrimaryColor)),
+                        child: InkWell(
+                          onTap: () {
+                            Navigator.of(context).push(MaterialPageRoute(builder: (context)=>userOrder()));
+                          },
+                          child: Icon(
+                            Icons.shopping_cart,
+                            color: kPrimaryColor,
+                          ),
                         ),
                       ),
                       SizedBox(
@@ -1188,7 +1174,58 @@ class _ItemdetailState extends State<Itm> {
                         child: SizedBox(
                           height: 50,
                           child: TextButton(
-                            onPressed: () {},
+                            onPressed: () async{
+                              showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text(
+            'Are You Sure ?',
+            style: TextStyle(
+                color: Colors.black, fontWeight: FontWeight.bold, fontSize: 22),
+          ),
+          backgroundColor: Colors.white,
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
+          actions: <Widget>[
+            TextButton(
+              style: TextButton.styleFrom(
+                textStyle: Theme.of(context).textTheme.labelLarge,
+              ),
+              child: const Text(
+                'No',
+                style: TextStyle(
+                    color: kPrimaryColor,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18),
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              style: TextButton.styleFrom(
+                textStyle: Theme.of(context).textTheme.labelLarge,
+              ),
+              child: const Text(
+                'Yes',
+                style: TextStyle(
+                    color: kPrimaryColor,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18),
+              ),
+              onPressed: () async{
+                await Provider.of<AppProvider>(context,listen: false).addToCart(widget.shopdata,size,count);
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+                              
+                              
+                            },
                             child: Text(
                               "Add to Cart".toUpperCase(),
                               style: TextStyle(
@@ -1199,7 +1236,7 @@ class _ItemdetailState extends State<Itm> {
                             ),
                             style: TextButton.styleFrom(
                                 backgroundColor:
-                                    Color.fromARGB(255, 146, 14, 14),
+                                    kPrimaryColor,
                                 // primary: Colors.blue,
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(18))),
