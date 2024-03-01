@@ -18,7 +18,7 @@ class userOrder extends StatelessWidget {
        )
        ),
        child: Column(children: [
-        cartItem(),
+        Expanded(child: cartItem()),
        Container(//decoration: BoxDecoration
       // (borderRadius: BorderRadius.circular(10))
        margin: EdgeInsets.symmetric(vertical: 20,horizontal: 15),
