@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 //import 'package:recipe_app/components/my_bottom_nav_bar.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
-import 'package:test_homee/Shop/shop.dart';
-import 'package:test_homee/products_screen.dart';
-import 'package:test_homee/profile/profile_screen.dart';
+import 'package:roaa/Chat/Login.dart';
+import '../Shop/shop.dart';
+import '../products_screen.dart';
+import '../profile/profile_screen.dart';
 
 import 'Pages/offers.dart';
 import 'constran.dart';
@@ -66,7 +67,7 @@ class _HomeState extends State<Home> {
     //final int id;
     switch(index){
       case 0:
-        widget =  ProfileScreen();
+        widget =  LoginScreen();
         break;
       case 1:
        //var id;
