@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:test_homee/Shop/shop.dart';
-import 'package:test_homee/Shop/shopData.dart';
+import 'package:roaa/App_Router/App_Router.dart';
+import '../Shop/shop.dart';
+import '../Shop/shopData.dart';
 
-import 'package:test_homee/body.dart';
-import 'package:test_homee/main_home.dart';
-import 'package:test_homee/providers/AppProvider.dart';
-import 'package:test_homee/start_page/foradmin/mysite.dart';
-import 'package:test_homee/start_page/splash.dart';
+import '../body.dart';
+import '../main_home.dart';
+import '../providers/AppProvider.dart';
+import '../start_page/foradmin/mysite.dart';
+import '../start_page/splash.dart';
 import 'Admin_cart/inprogress.dart';
 import 'Filter/h.dart';
 import 'Pages/add_new.dart';
@@ -24,7 +25,7 @@ import 'customer/loginfor_smalluser.dart';
 import 'products_screen.dart';
 void main() {
     //final int id;
-
+  // await Firebase
   runApp(const MyApp());
 }
 
@@ -47,6 +48,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Furniture app',
+        key: AppRouter.router.navigatorKey,
         theme: ThemeData(
           // We set Poppins as our default font
           //textTheme: GoogleFonts.poppinsTextTheme(Theme.of(context).textTheme),
