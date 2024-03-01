@@ -7,6 +7,8 @@ import 'package:fluttertoast/fluttertoast.dart';
 
 import 'package:http/http.dart' as http;
 import 'package:mailer/mailer.dart';
+import 'package:provider/provider.dart';
+import 'package:roaa/providers/AppProvider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../constran.dart';
@@ -81,195 +83,211 @@ class _OrderState extends State<editOrder> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        backgroundColor: Colors.white,
-        appBar: AppBar(
-        title: Text("Edit Information",
-            style: TextStyle(
-                color: Color.fromARGB(255, 146, 14, 14), fontSize: 20)),
-        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-        elevation: 1,
-        leading: IconButton(
-          icon: const Icon(
-            Icons.arrow_back,
-            color: Color.fromARGB(255, 146, 14, 14),
+    return Consumer<AppProvider>(
+      builder: (context,provider,c) {
+        return Scaffold(
+            backgroundColor: Colors.white,
+            appBar: AppBar(
+            title: Text("Edit Information",
+                style: TextStyle(
+                    color: Color.fromARGB(255, 146, 14, 14), fontSize: 20)),
+            backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+            elevation: 1,
+            leading: IconButton(
+              icon: const Icon(
+                Icons.arrow_back,
+                color: Color.fromARGB(255, 146, 14, 14),
+              ),
+              onPressed: () {
+                          Navigator.pop(context);
+
+              },
+            ),
           ),
-          onPressed: () {
-                      Navigator.pop(context);
-
-          },
-        ),
-      ),
-        body: SingleChildScrollView(
-            padding: EdgeInsets.symmetric(horizontal: 20),
-            child:
-                Column(mainAxisAlignment: MainAxisAlignment.center, children: <
-                    Widget>[
-              Container(
-                child: Padding(padding: EdgeInsets.only(top: 50)),
-              ),
-              Padding(padding: EdgeInsets.only(top: 5)),
-              Image.asset(
-                'lib/images/order.jpg',
-                fit: BoxFit.contain,
-                height: 150,
-              ),
-              Container(
-                  padding: EdgeInsets.symmetric(horizontal: 10),
-                  margin: EdgeInsets.only(bottom: 30, top: 5),
-                  child: Column(children: [
-                    Text(
-                      " Edit now !",
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        fontFamily: 'Mulish-VariableFont',
-                      ),
-                    ),
-                    Text(
-                      " Edit information for your dishes",
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 12,
-                        fontWeight: FontWeight.bold,
-                        fontFamily: 'Mulish-VariableFont',
-                      ),
-                    ),
-                    Container(
-                        padding: EdgeInsets.only(
-                          top: 15,
-                          left: 30,
-                          right: 30,
+            body: SingleChildScrollView(
+                padding: EdgeInsets.symmetric(horizontal: 20),
+                child:
+                    Column(mainAxisAlignment: MainAxisAlignment.center, children: <
+                        Widget>[
+                  Container(
+                    child: Padding(padding: EdgeInsets.only(top: 50)),
+                  ),
+                  Padding(padding: EdgeInsets.only(top: 5)),
+                  Image.asset(
+                    'lib/images/order.jpg',
+                    fit: BoxFit.contain,
+                    height: 150,
+                  ),
+                  Container(
+                      padding: EdgeInsets.symmetric(horizontal: 10),
+                      margin: EdgeInsets.only(bottom: 30, top: 5),
+                      child: Column(children: [
+                        Text(
+                          " Edit now !",
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            fontFamily: 'Mulish-VariableFont',
+                          ),
                         ),
-                        child: Form(
-                            child: Column(children: [
-                          TextFormField(
-                           // controller: username,
-                            decoration: InputDecoration(
-                              // suffixIcon: Icon(
-                              //   Icons.person,
-                              //   color: Color.fromARGB(255, 66, 85, 54),
-                              // ),
-                             // hintText: "Name",
-                              labelText: "Product Name",
-                              labelStyle: TextStyle(
-                                  fontSize: 15,
-                                  color: Colors.black,
-                                  fontFamily: "Mulish-VariableFont"),
-                              border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(30.0)),
-                              enabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: kPrimaryColor,
-                                      width: 2.5)),
-                              focusedBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(
-                                color: kPrimaryColor,
-                              )),
-                            ),
-                            keyboardType: TextInputType.name,
+                        Text(
+                          " Edit information for your dishes",
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold,
+                            fontFamily: 'Mulish-VariableFont',
                           ),
-                          SizedBox(height: 10),
-                          TextFormField(
-                           // controller: address,
-                            decoration: InputDecoration(
-                              hintText: "edit Price",
-                              labelText: "Price",
-                              labelStyle: TextStyle(
-                                  fontSize: 15,
-                                  color: Colors.black,
-                                  fontFamily: "Mulish-VariableFont"),
-                              border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(30.0)),
-                              enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                    color: kPrimaryColor,
-                                    width: 2.5),
-                              ),
-                              focusedBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(
-                                color: kPrimaryColor,
-                              )),
+                        ),
+                        Container(
+                            padding: EdgeInsets.only(
+                              top: 15,
+                              left: 30,
+                              right: 30,
                             ),
-                            // obscureText: true,
-                          ),
-                          SizedBox(height: 10),
-                          TextFormField(
-                            maxLines: 4,
-
-                            //controller: IDCard,
-                            decoration: InputDecoration(
-                              hintText: "add new Discription",
-                              labelText: "Product Details",
-                              labelStyle: TextStyle(
-                                  fontSize: 15,
-                                  color: Colors.black,
-                                  fontFamily: "Mulish-VariableFont"),
-                              border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(30.0)),
-                              enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
+                            child: Form(
+                                child: Column(children: [
+                              TextFormField(
+                               controller: provider.productNameController,
+                                decoration: InputDecoration(
+                                  // suffixIcon: Icon(
+                                  //   Icons.person,
+                                  //   color: Color.fromARGB(255, 66, 85, 54),
+                                  // ),
+                                 // hintText: "Name",
+                                  labelText: "Product Name",
+                                  labelStyle: TextStyle(
+                                      fontSize: 15,
+                                      color: Colors.black,
+                                      fontFamily: "Mulish-VariableFont"),
+                                  border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(30.0)),
+                                  enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: kPrimaryColor,
+                                          width: 2.5)),
+                                  focusedBorder: UnderlineInputBorder(
+                                      borderSide: BorderSide(
                                     color: kPrimaryColor,
-                                    width: 2.5),
+                                  )),
+                                ),
+                                keyboardType: TextInputType.name,
                               ),
-                              focusedBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(
-                                color: kPrimaryColor,
+                              SizedBox(height: 10),
+                              TextFormField(
+                               controller: provider.productPriceController,
                                
-                              )),
-                            ),
-                            // obscureText: true,
-                          ),
-                          SizedBox(height: 10),
-                          TextFormField(
-                            maxLines: 4,
-                            decoration: InputDecoration(
-                              hintText: "add new ingredients",
-                              labelText: "Ingredients",
-                              labelStyle: TextStyle(
-                                  fontSize: 15,
-                                  color: Colors.black,
-                                  fontFamily: "Mulish-VariableFont"),
-                              border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(30.0)),
-                              enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
+                                decoration: InputDecoration(
+                                  hintText: "edit Price",
+                                  labelText: "Price",
+                                  labelStyle: TextStyle(
+                                      fontSize: 15,
+                                      color: Colors.black,
+                                      fontFamily: "Mulish-VariableFont"),
+                                  border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(30.0)),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: kPrimaryColor,
+                                        width: 2.5),
+                                  ),
+                                  focusedBorder: UnderlineInputBorder(
+                                      borderSide: BorderSide(
                                     color: kPrimaryColor,
-                                    width: 2.5),
+                                  )),
+                                ),
+                                // obscureText: true,
                               ),
-                              focusedBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(
-                                color: kPrimaryColor,
-                              )),
-                            ),
-                            // obscureText: true,
-                          ),
-                          SizedBox(height: 15,),
-                          ElevatedButton(
-                            onPressed: () {
-                              // order_now(username.text, address.text, phone.text,
-                              //     widget.total, widget.orderdetail);
-                            },
-                            // ignore: sort_child_properties_last
-                            child: Text(
-                              "Confirm",
-                            ),
-                            style: ElevatedButton.styleFrom(
-                                backgroundColor: Color.fromARGB(255, 146, 14, 14),
-                                padding: EdgeInsets.all(10),
-                                minimumSize: Size(250.0, 40.0),
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(25)),
-                                textStyle: TextStyle(
-                                  fontFamily: 'Mulish-VariableFont',
-                                  fontSize: 15,
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                )),
-                          ),
-                        ])))
-                  ])),
-            ])));
+                              SizedBox(height: 10),
+                              TextFormField(
+                                maxLines: 4,
+
+                                controller: provider.productDetailsController,
+                                decoration: InputDecoration(
+                                  hintText: "add new Discription",
+                                  labelText: "Product Details",
+                                  labelStyle: TextStyle(
+                                      fontSize: 15,
+                                      color: Colors.black,
+                                      fontFamily: "Mulish-VariableFont"),
+                                  border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(30.0)),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: kPrimaryColor,
+                                        width: 2.5),
+                                  ),
+                                  focusedBorder: UnderlineInputBorder(
+                                      borderSide: BorderSide(
+                                    color: kPrimaryColor,
+                                   
+                                  )),
+                                ),
+                                // obscureText: true,
+                              ),
+                              SizedBox(height: 10),
+                              TextFormField(
+                                maxLines: 4,
+                                controller: provider.productIngredientsController,
+                                decoration: InputDecoration(
+                                  hintText: "add new ingredients",
+                                  labelText: "Ingredients",
+                                  labelStyle: TextStyle(
+                                      fontSize: 15,
+                                      color: Colors.black,
+                                      fontFamily: "Mulish-VariableFont"),
+                                  border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(30.0)),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: kPrimaryColor,
+                                        width: 2.5),
+                                  ),
+                                  focusedBorder: UnderlineInputBorder(
+                                      borderSide: BorderSide(
+                                    color: kPrimaryColor,
+                                  )),
+                                ),
+                                // obscureText: true,
+                              ),
+                              SizedBox(height: 15,),
+                              ElevatedButton(
+                                onPressed: () async{
+                                  await provider.updateItem();
+                                  // order_now(username.text, address.text, phone.text,
+                                  //     widget.total, widget.orderdetail);
+                                   showDialog(context: context, builder: (context){
+                          return AlertDialog(
+                            title: Text("Success"),
+                            content: Text("Item Updated Successfully"),
+                            actions: <Widget>[
+                              TextButton(onPressed: (){Navigator.of(context).pop();}, child: Text('ok'))
+                            ]
+                          );
+                        });
+                                },
+                                // ignore: sort_child_properties_last
+                                child: Text(
+                                  "Confirm",
+                                ),
+                                style: ElevatedButton.styleFrom(
+                                    backgroundColor: Color.fromARGB(255, 146, 14, 14),
+                                    padding: EdgeInsets.all(10),
+                                    minimumSize: Size(250.0, 40.0),
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(25)),
+                                    textStyle: TextStyle(
+                                      fontFamily: 'Mulish-VariableFont',
+                                      fontSize: 15,
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                    )),
+                              ),
+                            ])))
+                      ])),
+                ])));
+      }
+    );
   }
 }
