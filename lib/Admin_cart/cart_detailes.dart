@@ -1,10 +1,19 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:provider/provider.dart';
+
+import 'package:roaa/models/order.dart';
+import 'package:roaa/providers/AppProvider.dart';
 
 import 'inprogress.dart';
 
 class cartcus extends StatelessWidget {
+  final Order order;
+  const cartcus({
+    Key? key,
+    required this.order,
+  }) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -15,7 +24,7 @@ class cartcus extends StatelessWidget {
         //  for (int i = 1; i < 5;i++)
         Container(
           child: Row(
-            children: const [
+            children:  [
               SizedBox(
                 height: 80,
               ),
@@ -32,7 +41,7 @@ class cartcus extends StatelessWidget {
                       fontSize: 19.0,
                       color: Color.fromARGB(255, 15, 119, 105),
                       fontWeight: FontWeight.bold)),
-              Text("name.toString()",
+              Text(order.username,
                   style: TextStyle(
                       fontSize: 19.0,
                       color: Color.fromARGB(255, 146, 14, 14),
@@ -42,7 +51,7 @@ class cartcus extends StatelessWidget {
         ),
         Container(
           child: Row(
-            children: const [
+            children:  [
               SizedBox(
                 height: 20,
               ),
@@ -59,7 +68,7 @@ class cartcus extends StatelessWidget {
                       fontSize: 19.0,
                       color: Color.fromARGB(255, 15, 119, 105),
                       fontWeight: FontWeight.bold)),
-              Text("0599999999",
+              Text(order.phone.toString(),
                   style: TextStyle(
                       fontSize: 19.0,
                       color: Color.fromARGB(255, 146, 14, 14),
@@ -70,7 +79,7 @@ class cartcus extends StatelessWidget {
 
         Container(
           child: Row(
-            children: const [
+            children:  [
               SizedBox(
                 height: 80,
               ),
@@ -87,7 +96,7 @@ class cartcus extends StatelessWidget {
                       fontSize: 19.0,
                       color: Color.fromARGB(255, 15, 119, 105),
                       fontWeight: FontWeight.bold)),
-              Text("Nablus",
+              Text(order.address,
                   style: TextStyle(
                       fontSize: 19.0,
                       color: Color.fromARGB(255, 146, 14, 14),
@@ -97,7 +106,7 @@ class cartcus extends StatelessWidget {
         ),
         Container(
           child: Row(
-            children: const [
+            children:  [
               SizedBox(
                 height: 30,
               ),
@@ -114,7 +123,7 @@ class cartcus extends StatelessWidget {
                       fontSize: 19.0,
                       color: Color.fromARGB(255, 15, 119, 105),
                       fontWeight: FontWeight.bold)),
-              Text("Cake",
+              Text(order.itemName??'',
                   style: TextStyle(
                       fontSize: 19.0,
                       color: Color.fromARGB(255, 146, 14, 14),
@@ -125,7 +134,7 @@ class cartcus extends StatelessWidget {
 
         Container(
           child: Row(
-            children: const [
+            children:  [
               SizedBox(
                 height: 80,
               ),
@@ -142,7 +151,7 @@ class cartcus extends StatelessWidget {
                       fontSize: 19.0,
                       color: Color.fromARGB(255, 15, 119, 105),
                       fontWeight: FontWeight.bold)),
-              Text("2",
+              Text(order.count.toString(),
                   style: TextStyle(
                       fontSize: 19.0,
                       color: Color.fromARGB(255, 146, 14, 14),
@@ -153,7 +162,7 @@ class cartcus extends StatelessWidget {
 
         Container(
           child: Row(
-            children: const [
+            children:  [
               SizedBox(
                 height: 40,
               ),
@@ -170,7 +179,7 @@ class cartcus extends StatelessWidget {
                       fontSize: 19.0,
                       color: Color.fromARGB(255, 15, 119, 105),
                       fontWeight: FontWeight.bold)),
-              Text("Single",
+              Text(order.size,
                   style: TextStyle(
                       fontSize: 19.0,
                       color: Color.fromARGB(255, 146, 14, 14),
@@ -180,7 +189,7 @@ class cartcus extends StatelessWidget {
         ),
         Container(
           child: Row(
-            children: const [
+            children:  [
               SizedBox(
                 height: 80,
               ),
@@ -197,7 +206,7 @@ class cartcus extends StatelessWidget {
                       fontSize: 19.0,
                       color: Color.fromARGB(255, 15, 119, 105),
                       fontWeight: FontWeight.bold)),
-              Text("Chocolate filling",
+              Text(order.note,
                   style: TextStyle(
                       fontSize: 19.0,
                       color: Color.fromARGB(255, 146, 14, 14),
@@ -213,7 +222,10 @@ class cartcus extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             ElevatedButton.icon(
-              onPressed: () {},
+              onPressed: () async{
+                await Provider.of<AppProvider>(context,listen: false).rejectOrder(order);
+                
+              },
               icon: Icon(Icons.cancel),
               label: Text(
                 'Cancel',
@@ -234,14 +246,8 @@ class cartcus extends StatelessWidget {
               width: 20,
             ),
             ElevatedButton.icon(
-              onPressed: () {
-
-                 Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => inProg(
-                                            
-                                          )));
+              onPressed: ()async {
+                await Provider.of<AppProvider>(context,listen:false).acceptOrder(order);
               },
               icon: Icon(Icons.done),
               label: Text(
