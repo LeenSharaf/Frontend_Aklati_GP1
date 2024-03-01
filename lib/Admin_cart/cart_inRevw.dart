@@ -18,14 +18,14 @@ class cartItem extends StatelessWidget {
                 color: Colors.white, borderRadius: BorderRadius.circular(10)),
             child: Row(
               children: [
-                Container(
-                  height: 60,
-                  width: 65,
-                  margin: EdgeInsets.only(right: 7,bottom: 30),
-                  child:
-                      CircleAvatar(child: Image.asset("lib/imag/imag1(1).png"),backgroundColor: 
-                      Color.fromARGB(255, 24, 167, 148),),
-                ),
+                // Container(
+                //   height: 60,
+                //   width: 65,
+                //   margin: EdgeInsets.only(right: 7,bottom: 30),
+                //   child:
+                //       CircleAvatar(child: Image.asset("lib/imag/imag1(1).png"),backgroundColor: 
+                //       Color.fromARGB(255, 24, 167, 148),),
+                // ),
                 Padding(
                   padding: EdgeInsets.only(right: 2),
                   child: Column(
@@ -94,12 +94,7 @@ class cartItem extends StatelessWidget {
                        //   SizedBox(height: 80,),
                               ElevatedButton(
               onPressed: () {
-                 Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => Details(
-                                            
-                                          )));
+                 
               },
              child: Text(
                 'Details',
