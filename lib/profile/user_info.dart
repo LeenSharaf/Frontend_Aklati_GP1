@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:roaa/providers/AppProvider.dart';
 
 import '../constran.dart';
 
@@ -11,6 +13,7 @@ class Info extends StatelessWidget {
   required this.image,
   }); //: super(key: key);
   final String name, email, image;
+  
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +45,7 @@ class Info extends StatelessWidget {
                     ),
                     image: DecorationImage(
                       fit: BoxFit.cover,
-                      image: AssetImage(image),
+                      image:Provider.of<AppProvider>(context).imageFile==null? NetworkImage(image):FileImage(Provider.of<AppProvider>(context).imageFile!)as ImageProvider,
                     ),
                   ),
                 ),
