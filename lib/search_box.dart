@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:test_homee/Filter/popup.dart';
+import 'package:provider/provider.dart';
+import 'package:roaa/providers/AppProvider.dart';
+import '../Filter/popup.dart';
 
 import 'constran.dart';
 
@@ -65,7 +67,7 @@ class SearchBox extends StatelessWidget {
               color: Colors.white,
             ),
         onPressed: () {
-          // Perform the search here
+         Provider.of<AppProvider>(context,listen: false).filter();
         },
       ),
     ],
